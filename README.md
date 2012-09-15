@@ -1,4 +1,4 @@
-SSPS
+SSPPS
 ====
 
 A super simple plugin system for python
@@ -6,22 +6,22 @@ A super simple plugin system for python
 Installing
 ----------
 
-pip install ssps
+pip install sspps
 
 
 Using
 -----
 
 Load plugins from directory 'plugins':
-<pre><code>import ssbs
+<pre><code>import sspps
 
-pl = ssbs.PluginLoader('plugins')
+pl = sspps.PluginLoader('plugins')
 pl.load_all() </code></pre>
 
 Create a plugin by putting a module in plugins directory:
-<pre><code>import ssbs
+<pre><code>import sspps
 
-class MyPlugin(ssbs.Plugin):
+class MyPlugin(sspps.Plugin):
     enabled = True
     def __init__(self):
         print 'init!'
