@@ -27,3 +27,9 @@ class MyPlugin(sspps.Plugin):
         print 'init!'
     def activate(self):
         print 'Activated!' </code></pre>
+
+Features
+--------
+
+The plugin loader will only instantiate subclasses of ssps.Plugin so feel
+free to make your own classes in plugin files.
