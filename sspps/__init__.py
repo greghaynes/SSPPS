@@ -69,7 +69,9 @@ class PluginLoader(object):
                             found_driver = True
                                 
                         logging.debug('Initializing %s' % value.__name__)
-                        self.plugins.append(value())
+                        instance = value()
+                        instance.activate()
+                        self.plugins.append(instance)
                     else:
                         logging.debug('Skipping %s, not enabled' % value.__name__)
             
