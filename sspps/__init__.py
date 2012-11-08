@@ -20,8 +20,9 @@ class Plugin(object):
         pass
 
 class PluginLoader(object):
-    def __init__(self, plugins_dir):
+    def __init__(self, plugins_dir, parent_class=Plugin):
         self.plugins_dir = plugins_dir
+        self.parent_class = parent_class
         if self.plugins_dir[-1:] != '/':
             self.plugins_dir += '/'
         self.plugins = collections.deque()
@@ -47,7 +48,7 @@ class PluginLoader(object):
             self.plugins = []
             for key, value in mod_dict.items():
                 try:
-                    is_subclass = issubclass(value, Plugin)
+                    is_subclass = issubclass(value, self.parent_class)
                 except TypeError:
                     continue
                 if is_subclass:
