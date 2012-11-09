@@ -31,16 +31,17 @@ class PluginLoader(object):
         logging.debug('Starting plugin loading')
         plugins_dir = os.listdir(self.plugins_dir)
         found_driver = False
+        if self.plugins_dir not in sys.path:
+            sys.path.insert(0, self.plugins_dir)
         for poss_plugin in plugins_dir:
             full_path = self.plugins_dir + poss_plugin
-            full_plugin_path = full_path.replace('/', '.')
             if poss_plugin[-3:] == '.py':
                 logging.debug('loading %s' % full_path)
-                module=__import__(full_plugin_path[:-3])
-                mod_dict = module.__dict__[poss_plugin[:-3]]
+                module=__import__(poss_plugin[:-3])
+                mod_dict = module
             elif os.path.isdir(full_path) and os.path.isfile(full_path+'/__init__.py'):
-                module=__import__(full_plugin_path)
-                mod_dict = module.__dict__[poss_plugin]
+                module=__import__(poss_plugin)
+                mod_dict = module
             else:
                 logging.debug('skipping %s due to invalid path (No __init__.py or not .py)' % full_path)
                 continue

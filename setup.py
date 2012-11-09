@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(name='sspps',
-    version='0.1.3',
+    version='0.1.4',
     description='Super Simple Python Plugin Sytem',
     author='Gregory Haynes',
     author_email='greg@greghaynes.net',
