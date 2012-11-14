@@ -31,6 +31,7 @@ class PluginLoader(object):
         logging.debug('Starting plugin loading')
         plugins_dir = os.listdir(self.plugins_dir)
         found_driver = False
+        self.plugins = []
         if self.plugins_dir not in sys.path:
             sys.path.insert(0, self.plugins_dir)
         for poss_plugin in plugins_dir:
@@ -46,7 +47,6 @@ class PluginLoader(object):
                 logging.debug('skipping %s due to invalid path (No __init__.py or not .py)' % full_path)
                 continue
             mod_dict = mod_dict.__dict__
-            self.plugins = []
             for key, value in mod_dict.items():
                 try:
                     is_subclass = issubclass(value, self.parent_class)
@@ -59,17 +59,6 @@ class PluginLoader(object):
                         enabled = True
 
                     if enabled:
-                        try:
-                            is_driver = value.driver
-                        except AttributeError:
-                            is_driver = False
-
-                        if is_driver:
-                            if found_driver:
-                                logging.error("More than one driver detected. Exiting.")
-                                sys.exit(1)
-                            found_driver = True
-                                
                         logging.debug('Initializing %s' % value.__name__)
                         instance = value()
                         instance.activate()
