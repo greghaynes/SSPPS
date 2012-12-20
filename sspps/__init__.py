@@ -26,12 +26,12 @@ class PluginLoader(object):
         if self.plugins_dir[-1:] != '/':
             self.plugins_dir += '/'
         self.plugins = collections.deque()
+        self.modules = collections.deque()
 
     def load_all(self):
         logging.debug('Starting plugin loading')
         plugins_dir = os.listdir(self.plugins_dir)
         found_driver = False
-        self.plugins = []
         if self.plugins_dir not in sys.path:
             sys.path.insert(0, self.plugins_dir)
         for poss_plugin in plugins_dir:
@@ -62,6 +62,7 @@ class PluginLoader(object):
                         logging.debug('Initializing %s' % value.__name__)
                         instance = value()
                         instance.activate()
+                        self.modules.append(module)
                         self.plugins.append(instance)
                     else:
                         logging.debug('Skipping %s, not enabled' % value.__name__)
