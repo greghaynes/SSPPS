@@ -20,13 +20,16 @@ class Plugin(object):
         pass
 
 class PluginLoader(object):
-    def __init__(self, plugins_dir, parent_class=Plugin):
+    def __init__(self, plugins_dir, parent_class=Plugin,
+                 init_args=None, init_kwargs=None):
         self.plugins_dir = plugins_dir
         self.parent_class = parent_class
         if self.plugins_dir[-1:] != '/':
             self.plugins_dir += '/'
         self.plugins = collections.deque()
         self.modules = collections.deque()
+        self.init_args = ()
+        self.init_kwargs = {}
 
     def load_all(self):
         logging.debug('Starting plugin loading')
@@ -60,12 +63,12 @@ class PluginLoader(object):
 
                     if enabled:
                         logging.debug('Initializing %s' % value.__name__)
-                        instance = value()
+                        instance = value(*self.init_args, **self.init_kwargs)
                         instance.activate()
                         self.modules.append(module)
                         self.plugins.append(instance)
                     else:
                         logging.debug('Skipping %s, not enabled' % value.__name__)
-            
+
         logging.debug('Finished plugin loading')
 
