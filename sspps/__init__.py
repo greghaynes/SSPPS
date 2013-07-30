@@ -21,15 +21,15 @@ class Plugin(object):
 
 class PluginLoader(object):
     def __init__(self, plugins_dir, parent_class=Plugin,
-                 init_args=None, init_kwargs=None):
+                 init_args=(), init_kwargs={}):
         self.plugins_dir = plugins_dir
         self.parent_class = parent_class
         if self.plugins_dir[-1:] != '/':
             self.plugins_dir += '/'
         self.plugins = collections.deque()
         self.modules = collections.deque()
-        self.init_args = ()
-        self.init_kwargs = {}
+        self.init_args = init_args
+        self.init_kwargs = init_kwargs
 
     def load_all(self):
         logging.debug('Starting plugin loading')
